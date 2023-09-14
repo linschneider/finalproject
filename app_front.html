@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MongoDB Collection Data</title>
+</head>
+<body>
+    <h1>MongoDB Collection Data</h1>
+
+    {% if collection %}
+    <table border="1">
+        <tr>
+            <th>Platform</th>
+            <th>URL</th>
+        </tr>
+        {% for item in collection %}
+        <tr>
+            <td>{{ item.platform }}</td>
+            <td>{{ item.url }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No data found in the collection.</p>
+    {% endif %}
+
+    <p>Status: {{ status }}</p>
+</body>
+</html>
