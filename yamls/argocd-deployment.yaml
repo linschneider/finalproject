@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-deployment
-  namespace: argocd
+  name: app-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: argocd-server
+      app: main
   template:
     metadata:
       labels:
-        app: argocd-server
+        app: main
     spec:
       containers:
-        - name: argocd-server
-          image: argoproj/argocd:v2.1.1  # Adjust the version as needed
+        - name: main
+          image: linschneider/finalproject
           ports:
-            - containerPort: 8000
+            - containerPort: 5000
