@@ -12,10 +12,10 @@
             <th>Platform</th>
             <th>URL</th>
         </tr>
-        {% for item in collection %}
+        {% for document in collection %}
         <tr>
-            <td>{{ item.platform }}</td>
-            <td>{{ item.url }}</td>
+            <td>{{ document["platform"] }}</td>
+            <td>{{ document["url"] }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -23,6 +23,6 @@
     <p>No data found in the collection.</p>
     {% endif %}
 
-    <p>Status: {{ status }}</p>
+    <p>enjoy :)!</p>
 </body>
 </html>
