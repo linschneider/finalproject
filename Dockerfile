@@ -5,9 +5,9 @@ USER root
 # Install Docker
 RUN apt-get update && apt-get install -y docker.io
 
-USER jenkins
+RUN usermod -aG docker jenkins
 
-docker build -t custom-jenkins-agent:1.0 .
+USER jenkins
 
 # Use the official Python image as a parent image
 FROM python:3.8-slim-buster
