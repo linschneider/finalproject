@@ -3,9 +3,14 @@ kind: Pod
 metadata:
   name: slave-fts5l-bbg62
 spec:
-  containers:
+ containers:
   - name: ez-docker-helm-build
     image: ezezeasy/ez-docker-helm-build:1.41
     imagePullPolicy: Always
-    securityContext:
-      privileged: true
+    volumeMounts:
+        - name: docker
+          mountPath: /var/run/docker.sock
+  volumes:
+    - name: docker
+      hostPath:
+        path: /var/run/docker.sock:
