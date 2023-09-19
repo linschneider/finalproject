@@ -1,3 +1,14 @@
+FROM jenkins/inbound-agent:4.10
+
+USER root
+
+# Install Docker
+RUN apt-get update && apt-get install -y docker.io
+
+USER jenkins
+
+docker build -t custom-jenkins-agent:1.0 .
+
 # Use the official Python image as a parent image
 FROM python:3.8-slim-buster
 
