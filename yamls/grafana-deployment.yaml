@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1  # You can adjust the number of replicas as needed
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest  # You can specify a specific version here
+          ports:
+            - containerPort: 3000  # Port Grafana listens on
+          env:
+            - name: GF_SECURITY_ADMIN_USER  # Set the Grafana admin user
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD  # Set the Grafana admin password
+              value: admin
+            # You can add more environment variables as needed
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana  # Data directory for Grafana
+      volumes:
+        - name: grafana-storage
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+spec:
+  selector:
+    app: grafana
+  ports:
+    - port: 80
+      targetPort: 3000  # Port Grafana container is listening on
+  type: NodePort  # You can change this to LoadBalancer or ClusterIP as needed
