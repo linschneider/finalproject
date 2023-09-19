@@ -1,4 +1,5 @@
-FROM jenkins/inbound-agent:4.10
+# Stage 1: Build the Jenkins Agent
+FROM jenkins/inbound-agent:4.10 AS jenkins-agent
 
 USER root
 
@@ -8,6 +9,9 @@ RUN apt-get update && apt-get install -y docker.io
 RUN usermod -aG docker jenkins
 
 USER jenkins
+
+# Stage 2: Build the Python Application on top of the Jenkins Agent
+FROM jenkins-agent AS python-app
 
 # Use the official Python image as a parent image
 FROM python:3.8-slim-buster
