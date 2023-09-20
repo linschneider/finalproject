@@ -45,16 +45,37 @@ pipeline {
             }
         }
 
+        stage('Run Pytest') {
+            steps {
+                script {
+                    try {
+                        echo 'Running pytest...'
+
+                        // Assuming you have a virtual environment set up for your Flask app
+                        sh 'source venv/bin/activate && pytest -v'
+
+                        echo 'Pytest completed.'
+                    } catch (Exception e) {
+                        // Print detailed error information
+                        echo "Error: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error("Pytest failed")
+                    } finally {
+                        // Deactivate the virtual environment
+                        sh 'deactivate'
+                    }
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
-             
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push linschneider/finalproject:latest
-                        '''
-                    }
-                
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push linschneider/finalproject:latest
+                    '''
+                }
             }
         }
     }
