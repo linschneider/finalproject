@@ -1,38 +1,76 @@
 pipeline {
-agent {
+    agent {
         kubernetes {
-            label 'slave'
+            label 'flask-app'
             yamlFile 'build-pod.yaml'
-            defaultContainer 'ez-docker-helm-build'
+            defaultContainer 'docker-helm-buil'
         }
-}
+    }
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials') // Create a Jenkins credential for Docker Hub
+        DOCKER_REGISTRY = 'https://registry.hub.docker.com'
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials') 
     }
 
     stages {
-        stage('Checkout') {
+        stage('Test Docker') {
             steps {
-                // Check out the Git repository
-                checkout([$class: 'GitSCM', 
-                    branches: [[name: 'main']], // Specify the branch name
-                    userRemoteConfigs: [[url: 'https://github.com/linschneider/finalproject.git']]]) // Update the repository URL
+                script {
+                    sh 'docker --version'
+                }
             }
         }
 
-        stage('Build and Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
+                    try {
+                        echo 'Starting Docker build...'
+                        
+                        // Clone the Git repository into the workspace
+                            stages {
+                                stage('Checkout') {
+                                    steps {
+                                        // Check out the Git repository
+                                         checkout([$class: 'GitSCM', 
+                                            branches: [[name: 'main']], // Specify the branch name
+                                            userRemoteConfigs: [[url: 'https://github.com/linschneider/finalproject.git']]]) // Update the repository URL
+                                                  }
+                                                        }
+                        
+                        // Build the Docker image from the current directory
+                        def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
+                        echo 'Docker build completed.'
+                    } catch (Exception e) {
+                        // Print detailed error information
+                        echo "Error: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error("Docker build failed")
+                    }
+                }
+            }
+        }
 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    echo 'Starting Docker push...'
+                        
                     // Log in to Docker Hub
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         // Push the Docker image to Docker Hub
                         dockerImage.push()
                     }
+
+                    echo 'Docker push completed.'
                 }
             }
         }
     }
+
+    post {
+        success {
+            echo 'Docker image pushed successfully.'
+        }
+    }
 }
