@@ -44,7 +44,12 @@ pipeline {
                 }
             }
         }
-
+        stage('Run Tests') {
+            steps {
+                // Execute your Python test script
+                sh 'python test.py'
+            }
+        }
         stage('Push Docker Image') {
             steps {
              
