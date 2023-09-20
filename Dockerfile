@@ -12,4 +12,4 @@ COPY . /app
 EXPOSE 9101
 
 # Start the Flask app or your application as needed
-CMD ["python", "app_backend.py"]
+ENTRYPOINT ["python", "app.py"]
