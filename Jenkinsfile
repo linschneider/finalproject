@@ -44,20 +44,24 @@ pipeline {
                 }
             }
         }
-         stage('Push Docker Image') {
+
+        stage('Push Docker Image') {
             steps {
-                container('dind') {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                script {
+                    echo 'Starting Docker push...'
+                    
+                    // Log in to Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        // Push the Docker image to Docker Hub
                         def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
-                        dockerImage.push()                        '''
+                        dockerImage.push()
                     }
-                }
-            }
-        }    
+                    
                     echo 'Docker push completed.'
                 }
+            }
+        }
+    }
 
     post {
         success {
