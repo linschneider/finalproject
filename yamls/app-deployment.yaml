@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-deployment
+  name: linapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: main
+      app: linapp
   template:
     metadata:
       labels:
-        app: main
+        app: linapp
     spec:
       containers:
-        - name: main
+        - name: linapp
           image: linschneider/finalproject
           ports:
             - containerPort: 5000
-            - port: 5000
