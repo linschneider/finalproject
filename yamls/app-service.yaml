@@ -8,6 +8,6 @@ spec:
   type: LoadBalancer
   ports:
     - name: linsvc
-      port: 5000
-      targetPort: 5000
+      port: 9101
+      targetPort: 9101
 
