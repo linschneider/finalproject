@@ -1,4 +1,4 @@
-FROM jenkins-agent AS python-app
+FROM python:3.10
 
 # Set the working directory in the container
 WORKDIR /app
