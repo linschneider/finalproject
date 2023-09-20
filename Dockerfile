@@ -8,8 +8,8 @@ RUN pip install flask pymongo
 
 COPY . /app
 
-# Expose port 5000 for the Flask app (if needed)
-EXPOSE 5000
+# Expose port for the Flask app (if needed)
+EXPOSE 9101
 
 # Start the Flask app or your application as needed
 CMD ["python", "app_backend.py"]
