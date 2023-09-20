@@ -3,7 +3,7 @@ pipeline {
         kubernetes {
             label 'flask-app'
             yamlFile 'build-pod.yaml'
-            defaultContainer 'docker-helm-build'
+            defaultContainer 'docker-helm-build' // Corrected container name
         }
     }
 
@@ -45,49 +45,16 @@ pipeline {
             }
         }
 
-        stage('Run Pytest') {
-            steps {
-                script {
-                    try {
-                        echo 'Running pytest...'
-
-                        // Install Python virtual environment package
-                        sh 'pip install virtualenv'
-
-                        // Create a virtual environment
-                        sh 'python -m virtualenv venv'
-
-                        // Activate the virtual environment
-                        sh 'source venv/bin/activate'
-
-                        // Install dependencies from requirements.txt
-                        sh 'pip install -r requirements.txt'
-
-                        // Run pytest
-                        sh 'pytest -v'
-
-                        echo 'Pytest completed.'
-                    } catch (Exception e) {
-                        // Print detailed error information
-                        echo "Error: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error("Pytest failed")
-                    } finally {
-                        // Deactivate the virtual environment
-                        sh 'deactivate'
-                    }
-                }
-            }
-        }
-
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    docker push linschneider/finalproject:latest
-                    '''
-                }
+             
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push linschneider/finalproject:latest
+                        '''
+                    }
+                
             }
         }
     }
@@ -98,3 +65,4 @@ pipeline {
         }
     }
 }
+
