@@ -16,4 +16,4 @@ spec:
         - name: linapp
           image: linschneider/finalproject
           ports:
-            - containerPort: 5000
+            - containerPort: 9101
