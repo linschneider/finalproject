@@ -17,3 +17,4 @@ spec:
           image: linschneider/finalproject
           ports:
             - containerPort: 5000
+            - port: 5000
