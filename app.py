@@ -27,7 +27,7 @@ client.close()
 @app.route('/')
 def index():
     print(document_list)
-    return render_template('app_front.html', collection=document_list)
+    return render_template('index.html', collection=document_list)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=9101, debug=True)
