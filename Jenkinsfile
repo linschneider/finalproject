@@ -3,7 +3,7 @@ pipeline {
         kubernetes {
             label 'flask-app'
             yamlFile 'build-pod.yaml'
-            defaultContainer 'docker-helm-build' // Corrected container name
+            defaultContainer 'docker-helm-build'
         }
     }
 
@@ -51,8 +51,13 @@ pipeline {
                     try {
                         echo 'Running pytest...'
 
-                        // Assuming you have a virtual environment set up for your Flask app
-                        sh 'source venv/bin/activate && pytest -v'
+                        // Create and activate the virtual environment
+                        sh '''
+                        python -m venv venv
+                        source venv/bin/activate
+                        pip install -r requirements.txt
+                        pytest -v
+                        '''
 
                         echo 'Pytest completed.'
                     } catch (Exception e) {
