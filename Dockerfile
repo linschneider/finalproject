@@ -4,13 +4,10 @@ FROM python:3.10
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt .
+COPY .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
-
-# Copy the contents of the current directory into the container at /app
-COPY . .
+RUN pip install flask pymongo
 
 # Expose port 5000 for the Flask app (if needed)
 EXPOSE 5000
