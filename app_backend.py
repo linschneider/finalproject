@@ -30,4 +30,4 @@ def index():
     return render_template('app_front.html', collection=document_list)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", port=9101, debug=True)
