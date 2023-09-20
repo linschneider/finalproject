@@ -51,13 +51,20 @@ pipeline {
                     try {
                         echo 'Running pytest...'
 
-                        // Create and activate the virtual environment
-                        sh '''
-                        python -m venv venv
-                        source venv/bin/activate
-                        pip install -r requirements.txt
-                        pytest -v
-                        '''
+                        // Install Python virtual environment package
+                        sh 'pip install virtualenv'
+
+                        // Create a virtual environment
+                        sh 'python -m virtualenv venv'
+
+                        // Activate the virtual environment
+                        sh 'source venv/bin/activate'
+
+                        // Install dependencies from requirements.txt
+                        sh 'pip install -r requirements.txt'
+
+                        // Run pytest
+                        sh 'pytest -v'
 
                         echo 'Pytest completed.'
                     } catch (Exception e) {
