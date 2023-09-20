@@ -1,8 +1,10 @@
+
 pipeline {
     agent {
         kubernetes {
             label 'flask-app'
             yamlFile 'build-pod.yaml'
+            defaultContainer 'docker-helm-build' // Corrected container name
         }
     }
 
@@ -48,14 +50,17 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Docker push...'
-                    
+
+                                steps {
+                script {
+                    def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
                     // Log in to Docker Hub
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         // Push the Docker image to Docker Hub
-                        def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
                         dockerImage.push()
                     }
-                    
+                }
+
                     echo 'Docker push completed.'
                 }
             }
@@ -67,4 +72,3 @@ pipeline {
             echo 'Docker image pushed successfully.'
         }
     }
-}
