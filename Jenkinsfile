@@ -49,13 +49,16 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Docker push...'
-                        
+
+                                steps {
+                script {
+                    def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
                     // Log in to Docker Hub
-                    docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_HUB_CREDENTIALS}") {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         // Push the Docker image to Docker Hub
-                        def dockerImage = docker.image("linschneider/finalproject") // Use the correct image name
                         dockerImage.push()
                     }
+                }
 
                     echo 'Docker push completed.'
                 }
