@@ -3,7 +3,7 @@ pipeline {
         kubernetes {
             label 'flask-app'
             yamlFile 'build-pod.yaml'
-            defaultContainer 'docker-helm-buil'
+            defaultContainer 'docker-helm-build' // Corrected container name
         }
     }
 
@@ -28,15 +28,9 @@ pipeline {
                         echo 'Starting Docker build...'
                         
                         // Clone the Git repository into the workspace
-                            stages {
-                                stage('Checkout') {
-                                    steps {
-                                        // Check out the Git repository
-                                         checkout([$class: 'GitSCM', 
-                                            branches: [[name: 'main']], // Specify the branch name
-                                            userRemoteConfigs: [[url: 'https://github.com/linschneider/finalproject.git']]]) // Update the repository URL
-                                                  }
-                                                        }
+                        checkout([$class: 'GitSCM', 
+                            branches: [[name: 'main']], // Specify the branch name
+                            userRemoteConfigs: [[url: 'https://github.com/linschneider/finalproject.git']]]) // Update the repository URL
                         
                         // Build the Docker image from the current directory
                         def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
@@ -57,8 +51,9 @@ pipeline {
                     echo 'Starting Docker push...'
                         
                     // Log in to Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_HUB_CREDENTIALS}") {
                         // Push the Docker image to Docker Hub
+                        def dockerImage = docker.image("linschneider/finalproject") // Use the correct image name
                         dockerImage.push()
                     }
 
@@ -71,6 +66,6 @@ pipeline {
     post {
         success {
             echo 'Docker image pushed successfully.'
-        }
-    }
+        }
+    }
 }
