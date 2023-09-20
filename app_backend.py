@@ -4,10 +4,10 @@ import pymongo
 app = Flask(__name__)
 
 # Step 2: Establish a connection to MongoDB
-client = pymongo.MongoClient("mongodb://localhost:27017/")  # Change the connection string as needed
+client = pymongo.MongoClient("mongodb://root:3yGWpZ7jeS@34.78.116.136:27017/")  # Change the connection string as needed
 
 # Step 3: Access the collection
-db = client["finalprojectapp"]  # Replace with your database name
+db = client["lin_db"]  # Replace with your database name
 collection = db["dbapp"]  # Replace with your collection name
 
 # Step 4: Collect data from the collection
