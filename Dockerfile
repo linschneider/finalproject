@@ -6,10 +6,10 @@ WORKDIR /app
 # Install any needed packages specified in requirements.txt
 RUN pip install flask pymongo
 
-COPY . /app
+COPY app /app
 
 # Expose port for the Flask app (if needed)
 EXPOSE 9101
 
 # Start the Flask app or your application as needed
-ENTRYPOINT ["python", "app.py"]
+ENTRYPOINT ["python3", "app.py"]
