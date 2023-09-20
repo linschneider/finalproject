@@ -20,6 +20,18 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                container('dind') {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', credentialsId: 'DOCKER_USER', credentialsId: 'DOCKER_PASS')]) {
+                        sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push linschneider/finalproject
+                        '''
+                    }
+                }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
