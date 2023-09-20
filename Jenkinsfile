@@ -1,4 +1,3 @@
-
 pipeline {
     agent {
         kubernetes {
@@ -50,17 +49,14 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Docker push...'
-
-                                steps {
-                script {
-                    def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
+                    
                     // Log in to Docker Hub
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         // Push the Docker image to Docker Hub
+                        def dockerImage = docker.build("linschneider/finalproject", "-f Dockerfile .")
                         dockerImage.push()
                     }
-                }
-
+                    
                     echo 'Docker push completed.'
                 }
             }
@@ -71,6 +67,5 @@ pipeline {
         success {
             echo 'Docker image pushed successfully.'
         }
-    }
     }
 }
