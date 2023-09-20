@@ -44,30 +44,50 @@ pipeline {
                 }
             }
         }
+
         stage('Run Tests') {
             steps {
                 // Execute your Python test script
-                sh 'python test.py'
+                script {
+                    try {
+                        // Make sure Python is installed in the Docker container
+                        sh 'docker exec -i docker-helm-build python --version'
+                        
+                        // Run your Python test script inside the Docker container
+                        sh 'docker exec -i docker-helm-build python test.py'
+                    } catch (Exception e) {
+                        // Print detailed error information
+                        echo "Error: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error("Test execution failed")
+                    }
+                }
             }
         }
+
         stage('Push Docker Image') {
             steps {
-             
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push linschneider/finalproject:latest
-                        '''
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    script {
+                        try {
+                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                            sh 'docker push linschneider/finalproject:latest'
+                            echo 'Docker image pushed successfully.'
+                        } catch (Exception e) {
+                            // Print detailed error information
+                            echo "Error: ${e.message}"
+                            currentBuild.result = 'FAILURE'
+                            error("Docker image push failed")
+                        }
                     }
-                
+                }
             }
         }
     }
 
     post {
-        success {
-            echo 'Docker image pushed successfully.'
+        always {
+            // Cleanup or post-processing steps can go here
         }
     }
 }
-
