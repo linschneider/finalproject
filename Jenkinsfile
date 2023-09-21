@@ -49,19 +49,9 @@ pipeline {
             steps {
                 // Execute your Python test script
                 script {
-                    try {
-                        // Make sure Python is installed in the Docker container
-                        sh 'docker exec -i docker-helm-build python --version'
-                        
-                        // Run your Python test script inside the Docker container
-                        sh 'docker exec -i python test.py'
-                    } catch (Exception e) {
-                        // Print detailed error information
-                        echo "Error: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error("Test execution failed")
-                    }
-                }
+                    sh 'docker run linschneider/finalproject:latest test.py'
+                    echo "success"
+
             }
         }
 
