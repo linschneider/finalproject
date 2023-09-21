@@ -1,21 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MongoDB Collection Data</title>
+    <title>Lin Schneider Profile</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/564x/8c/76/12/8c7612df030694030f0a1b75650aba24.jpg'); /* Specify the URL of the background image */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: 'Kaushan Script', cursive; /* Apply the "Kaushan Script" font to the entire page */
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-family: 'Kaushan Script', cursive; /* Apply the "Kaushan Script" font to titles */
+        }
+
+        p.intro {
+            font-size: 18px; /* Adjust the font size as desired */
+            margin: 20px auto; /* Add margin for spacing */
+            max-width: 800px; /* Limit the paragraph width for readability */
+        }
+
+        table {
+            border-collapse: separate; /* Add space between table cells */
+            border-spacing: 10px; /* Adjust the spacing between table cells */
+            margin: 20px auto;
+            font-family: 'Bree Serif', serif; /* Apply the "Bree Serif" font to the table */
+        }
+
+        th, td {
+            padding: 10px; /* Increase cell padding */
+        }
+
+        td.platform {
+            padding-right: 30px; /* Increase the right padding for more space */
+        }
+
+        .icon {
+            max-width: 48px; /* Increase the maximum width for larger icons */
+            max-height: 48px; /* Increase the maximum height for larger icons */
+        }
+    </style>
+    <!-- Paste the Google Fonts code snippet here for "Kaushan Script" and "Bree Serif" fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script|Bree+Serif">
 </head>
 <body>
-    <h1>MongoDB Collection Data</h1>
+    <h1>Lin Schneider Profile</h1>
+
+    <p class="intro">
+        Hello there! I'm Lin Schneider, a DevOps Developer. Feel free to explore my projects and gain insight into my life's adventures as we get acquainted. Let's connect through those platforms.
+    </p>
 
     {% if collection %}
-    <table border="1">
+    <table>
         <tr>
+            <th>Icon</th>
             <th>Platform</th>
             <th>URL</th>
         </tr>
         {% for document in collection %}
         <tr>
-            <td>{{ document["platform"] }}</td>
-            <td>{{ document["url"] }}</td>
+            <td><img class="icon" src="{{ document["icon"] }}" alt="Icon"></td>
+            <td class="platform">{{ document["platform"] }}</td>
+            <td><a href="{{ document["url"] }}" target="_blank">{{ document["url"] }}</a></td>
         </tr>
         {% endfor %}
     </table>
@@ -23,6 +72,6 @@
     <p>No data found in the collection.</p>
     {% endif %}
 
-    <p>enjoy :)!</p>
+    <p style="font-family: 'Kaushan Script', cursive;">It's been a pleasure meeting you!</p>
 </body>
 </html>
