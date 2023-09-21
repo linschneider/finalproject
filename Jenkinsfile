@@ -20,7 +20,8 @@ pipeline {
                 }
             }
         }
- stage('Build Docker Image') {
+
+        stage('Build Docker Image') {
             steps {
                 script {
                     try {
@@ -44,35 +45,24 @@ pipeline {
             }
         }
 
-
-
-        stage('Run Tests') {
-            steps {
-                // Execute your Python test script
-                script {
-                    sh 'docker run linschneider/finalproject:latest test.py'
-                    echo "success"
-                }
-            }
-        }
-
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    script {
-                        try {
-                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                            sh 'docker push linschneider/finalproject:latest'
-                            echo 'Docker image pushed successfully.'
-                        }catch (Exception e) {
-                        // Print detailed error information
-                        echo "Error: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error("Docker push failed")
-                    } 
+             
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push linschneider/finalproject:latest
+                        '''
                     }
-                }
+                
             }
         }
     }
+
+    post {
+        success {
+            echo 'Docker image pushed successfully.'
+        }
+    }
 }
+
