@@ -18,9 +18,7 @@ Before you begin, ensure you have the following prerequisites:
 - ./get_helm.sh
 
 
-
-
-**Install Jenkins **
+**Install Jenkins**
 -  helm repo add jenkins https://charts.jenkins.io
 - 
 -  helm repo update
@@ -38,8 +36,6 @@ Before you begin, ensure you have the following prerequisites:
 Connect to Jenkins at http://localhost:8080/ using the username admin and the password obtained in the previous step.
 
  
-
-
 
 **Adding Jenkins Pluggings**
 
