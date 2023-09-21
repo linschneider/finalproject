@@ -63,12 +63,7 @@ pipeline {
                             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                             sh 'docker push linschneider/finalproject:latest'
                             echo 'Docker image pushed successfully.'
-                        } catch (Exception e) {
-                            // Print detailed error information
-                            echo "Error: ${e.message}"
-                            currentBuild.result = 'FAILURE'
-                            error("Docker image push failed")
-                        }
+                        } 
                     }
                 }
             }
