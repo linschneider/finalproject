@@ -51,7 +51,7 @@ pipeline {
                 script {
                     sh 'docker run linschneider/finalproject:latest test.py'
                     echo "success"
-
+                }
             }
         }
 
@@ -74,5 +74,4 @@ pipeline {
             }
         }
     }
-}
 }
