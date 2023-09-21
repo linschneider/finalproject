@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: linapp
-          image: linschneider/finalproject
+          image: linschneider/finalproject:latest
           ports:
             - containerPort: 9101
