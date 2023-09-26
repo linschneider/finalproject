@@ -3,6 +3,7 @@
 ### Flask Application Deployment with Jenkins, ArgoCD, Grafana, and Prometheus
 
 This project demonstrates the deployment and management of a Flask application using Jenkins, ArgoCD, Grafana, and Prometheus. With this setup, you can automate the deployment, monitoring, and observability of the Flask application.
+![Description](j.jpg)
 
 ## Prerequisites
 
@@ -52,3 +53,6 @@ ArgoCD ensures that your Flask application is continuously deployed and stays in
 
 
 Feel free to explore the project and customize it to suit your needs. If you have any questions or need assistance, please reach out.
+
+
+![Description](p.jpg)
