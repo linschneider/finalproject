@@ -31,6 +31,8 @@ Before you begin, ensure you have the following components set up:
    - Set up ArgoCD to monitor the Git repository where your application manifests are stored.
    - Create an ArgoCD Application resource to deploy and manage your Flask application on a Kubernetes cluster.
    - ArgoCD will ensure the application stays in sync with the desired state defined in your Git repository.
+     ![Description](ARGO.jpg)
+
 
 3. **Grafana and Prometheus Integration**:
    - Deploy Grafana and Prometheus on your Kubernetes cluster.
