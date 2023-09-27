@@ -25,7 +25,7 @@ Before you begin, ensure you have the following components set up:
    - Create a Jenkinsfile that defines the CI/CD workflow.
    - Trigger the pipeline whenever changes are pushed to your Git repository.
    
-   You may see the pipeline's logs in the Jenkinsfile [here]([https://github.com/linschneider/finalproject/blob/main/JenkinsFileLogs]).
+   You may see the pipeline's logs in the Jenkinsfile [here](https://github.com/linschneider/finalproject/blob/main/JenkinsFileLogs).
 
 2. **ArgoCD Deployment**:
    - Set up ArgoCD to monitor the Git repository where your application manifests are stored.
