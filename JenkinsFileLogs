@@ -1,0 +1,263 @@
+Started by user Jenkins Admin
+Obtained Jenkinsfile from git https://github.com/linschneider/finalproject.git
+[Pipeline] Start of Pipeline
+[Pipeline] readTrusted
+Obtained build-pod.yaml from git https://github.com/linschneider/finalproject.git
+[Pipeline] echo
+[WARNING] label option is deprecated. To use a static pod template, use the 'inheritFrom' option.
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Created Pod: kubernetes jenkins/flask-app-lmn42-6hcwq
+Still waiting to schedule task
+‘flask-app-lmn42-6hcwq’ is offline
+Agent flask-app-lmn42-6hcwq is provisioned from template flask-app-lmn42
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    buildUrl: "http://jenkins.jenkins.svc.cluster.local:8080/job/pipeline/119/"
+    runUrl: "job/pipeline/119/"
+  labels:
+    jenkins/jenkins-jenkins-agent: "true"
+    jenkins/label-digest: "9d3700bf3025611e13756205ece1f813e166b2d6"
+    jenkins/label: "flask-app"
+  name: "flask-app-lmn42-6hcwq"
+  namespace: "jenkins"
+spec:
+  containers:
+  - command:
+    - "tail"
+    - "-f"
+    - "/dev/null"
+    image: "ezezeasy/ez-docker-helm-build"
+    imagePullPolicy: "Always"
+    name: "docker-helm-build"
+    volumeMounts:
+    - mountPath: "/var/run/docker.sock"
+      name: "docker"
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_TUNNEL"
+      value: "jenkins-agent.jenkins.svc.cluster.local:50000"
+    - name: "JENKINS_AGENT_NAME"
+      value: "flask-app-lmn42-6hcwq"
+    - name: "JENKINS_NAME"
+      value: "flask-app-lmn42-6hcwq"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+    image: "jenkins/inbound-agent:3142.vcfca_0cd92128-1"
+    name: "jnlp"
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  volumes:
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+  - hostPath:
+      path: "/var/run/docker.sock"
+    name: "docker"
+
+Running on flask-app-lmn42-6hcwq in /home/jenkins/agent/workspace/pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+Created Pod: kubernetes jenkins/flask-app-lmn42-z62qg
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/linschneider/finalproject.git
+ > git init /home/jenkins/agent/workspace/pipeline # timeout=10
+Fetching upstream changes from https://github.com/linschneider/finalproject.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+ > git fetch --tags --force --progress -- https://github.com/linschneider/finalproject.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/linschneider/finalproject.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision b3c3471c7b55c74a13f043a130b829073001da34 (refs/remotes/origin/main)
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b3c3471c7b55c74a13f043a130b829073001da34 # timeout=10
+Commit message: "Update index.html"
+ > git rev-list --no-walk 9e315c9669e9dddba10e12e8e153a60270422c46 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] container
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_HUB_CREDENTIALS or $DOCKER_HUB_CREDENTIALS_PSW
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Test Docker)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker --version
+Docker version 23.0.6, build ef23cbc4315ae76c744e02d687c09548ede461bd
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+Starting Docker build...
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Warning: JENKINS-30600: special launcher org.csanchez.jenkins.plugins.kubernetes.pipeline.ContainerExecDecorator$1@41454a7e; decorates RemoteLauncher[hudson.remoting.Channel@6dc0c28f:JNLP4-connect connection from 10.1.0.194/10.1.0.194:42368] will be ignored (a typical symptom is the Git executable not being run inside a designated container)
+ > git rev-parse --resolve-git-dir /home/jenkins/agent/workspace/pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/linschneider/finalproject.git # timeout=10
+Fetching upstream changes from https://github.com/linschneider/finalproject.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+ > git fetch --tags --force --progress -- https://github.com/linschneider/finalproject.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision b3c3471c7b55c74a13f043a130b829073001da34 (origin/main)
+Commit message: "Update index.html"
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
+ > git rev-parse origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b3c3471c7b55c74a13f043a130b829073001da34 # timeout=10
++ docker build -t linschneider/finalproject -f Dockerfile .
+#1 [internal] load .dockerignore
+#1 transferring context:
+#1 transferring context: 2B 0.1s done
+#1 DONE 0.4s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 378B 0.0s done
+#2 DONE 0.5s
+
+#3 [internal] load metadata for docker.io/library/python:3.10
+#3 DONE 3.4s
+
+#4 [internal] load build context
+#4 transferring context: 5.04kB 0.1s done
+#4 DONE 0.2s
+
+#5 [1/4] FROM docker.io/library/python:3.10@sha256:1e5e9ee5b5d12ec9c803eb6166ae4862641d21ed259d0856e34999a1f36b0498
+#5 resolve docker.io/library/python:3.10@sha256:1e5e9ee5b5d12ec9c803eb6166ae4862641d21ed259d0856e34999a1f36b0498 0.2s done
+#5 DONE 0.2s
+
+#6 [2/4] WORKDIR /app
+#6 CACHED
+
+#7 [3/4] RUN pip install flask pymongo pytest
+#7 CACHED
+
+#8 [4/4] COPY app /app
+#8 DONE 0.1s
+
+#9 exporting to image
+#9 exporting layers
+#9 exporting layers 0.3s done
+#9 writing image sha256:f946dae432ba7eee3511ac13018a8c95cee2e21ec9d20241ee346e800e3b8ab5 0.0s done
+#9 naming to docker.io/linschneider/finalproject 0.0s done
+#9 DONE 0.3s
+WARNING: buildx: failed to read current commit information with git rev-parse --is-inside-work-tree
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] echo
+Docker build completed.
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Docker Image)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ docker login -u linschneider --password-stdin
++ echo ****
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
++ docker push linschneider/finalproject:latest
+The push refers to repository [docker.io/linschneider/finalproject]
+620adc5d214c: Preparing
+96c517a4bab4: Preparing
+e8b05210bc57: Preparing
+9f64fe0537e8: Preparing
+8e61b2657a81: Preparing
+950807b81130: Preparing
+c26432533a6a: Preparing
+01d6cdeac539: Preparing
+a981dddd4c65: Preparing
+f6589095d5b5: Preparing
+7c85cfa30cb1: Preparing
+a981dddd4c65: Waiting
+f6589095d5b5: Waiting
+7c85cfa30cb1: Waiting
+950807b81130: Waiting
+c26432533a6a: Waiting
+01d6cdeac539: Waiting
+e8b05210bc57: Layer already exists
+9f64fe0537e8: Layer already exists
+96c517a4bab4: Layer already exists
+8e61b2657a81: Layer already exists
+950807b81130: Layer already exists
+c26432533a6a: Layer already exists
+a981dddd4c65: Layer already exists
+01d6cdeac539: Layer already exists
+f6589095d5b5: Layer already exists
+7c85cfa30cb1: Layer already exists
+620adc5d214c: Pushed
+latest: digest: sha256:8dcae5e595af87bcc727f1d5f91329f6e28eaab3ba7586b6ad7540351ea1f355 size: 2633
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Docker image pushed successfully.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] End of Pipeline
+Finished: SUCCESS
