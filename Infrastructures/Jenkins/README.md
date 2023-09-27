@@ -46,10 +46,14 @@ Search for and select the following plugins:
 - Kubernetes Plugin
 Click the "Download now and install after restart" button at the bottom of the page.
 Jenkins will download and install the selected plugins. After installation, Jenkins will prompt you to restart. Click "Restart Jenkins when the installation is complete and no jobs are running" to complete the installation. Jenkins will restart with the newly added plugins.
-Configure Jenkins Pipeline
+
+##Configure Jenkins Pipeline
+
 To build and push Docker images to DockerHub, create a Jenkins pipeline using the following Jenkinsfile. Make sure to modify the DockerHub credentials according to your DockerHub account.
 
 ```bash
+
+
 pipeline {
     agent {
         kubernetes {
@@ -117,6 +121,7 @@ pipeline {
         }
     }
 }
+
 ```
 
 Note: Ensure you change the DockerHub credentials according to your DockerHub account.
