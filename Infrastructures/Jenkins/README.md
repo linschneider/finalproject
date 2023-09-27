@@ -1,71 +1,55 @@
-**Jenkins Install**
+# Jenkins Installation
 
-**Prerequisites**
+## Prerequisites
 
 Before you begin, ensure you have the following prerequisites:
 
-- Kubernetes cluster is up and running.
+- A Kubernetes cluster is up and running.
 - Helm is installed on your system.
 
+## Installation Steps
 
-**Installation Steps**
+### Install Helm
 
+```bash
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod +x get_helm.sh
+./get_helm.sh
 
-**Install helm:**
+```
 
-- curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-- chmod +x get_helm.sh
-- ./get_helm.sh
+## Install Jenkins
 
+```bash
+helm repo add jenkins https://charts.jenkins.io
+helm repo update
+helm install jenkins jenkins/jenkins --namespace jenkins
 
-**Install Jenkins**
--  helm repo add jenkins https://charts.jenkins.io
-- 
--  helm repo update
--  
--  helm install jenkins jenkins/jenkins --namespace jenkins
+#Retrieve Jenkins Admin Password
+kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/additional/chart-admin-password
 
- **Retrieve Jenkins Admin Password**
-
-- kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/additional/   chart-admin-password
- 
- **Access Jenkins**
-
-- kubectl --namespace jenkins port-forward svc/jenkins 8080:8080`
+#Access Jenkins
+kubectl --namespace jenkins port-forward svc/jenkins 8080:8080
+```
 
 Connect to Jenkins at http://localhost:8080/ using the username admin and the password obtained in the previous step.
 
- 
-
-**Adding Jenkins Pluggings**
-
- Log in to your Jenkins instance at http://localhost:8080/
-
-- Click on "Manage Jenkins" in the Jenkins dashboard.
-
-- Select "Manage Plugins" from the menu.
-
-- Go to the "Available" tab.
- 
-- Search for and select the following plugins:
- 
+## Adding Jenkins Plugins
+Log in to your Jenkins instance at http://localhost:8080/.
+Click on "Manage Jenkins" in the Jenkins dashboard.
+Select "Manage Plugins" from the menu.
+Go to the "Available" tab.
+Search for and select the following plugins:
 - Docker Plugin
 - GitHub Plugin
 - GitLab Plugin
 - Kubernetes Plugin
-- Click the "Download now and install after restart" button at the bottom of the page.
-
-- Jenkins will download and install the selected plugins. After installation, Jenkins will prompt you to restart. Click "Restart Jenkins when the installation is complete and no jobs are running" to complete the installation.
-
-Jenkins will restart with the newly added plugins
-
-
- 
-**Configure Jenkins Pipeline**
+Click the "Download now and install after restart" button at the bottom of the page.
+Jenkins will download and install the selected plugins. After installation, Jenkins will prompt you to restart. Click "Restart Jenkins when the installation is complete and no jobs are running" to complete the installation. Jenkins will restart with the newly added plugins.
+Configure Jenkins Pipeline
 To build and push Docker images to DockerHub, create a Jenkins pipeline using the following Jenkinsfile. Make sure to modify the DockerHub credentials according to your DockerHub account.
- make sure to change the DockerHub cardential according to your DockerHub account
 
-
+```bash
 pipeline {
     agent {
         kubernetes {
@@ -133,15 +117,19 @@ pipeline {
         }
     }
 }
+```
+
+Note: Ensure you change the DockerHub credentials according to your DockerHub account.
+after the pipeline this logs should apear [here](https://github.com/linschneider/finalproject/blob/main/JenkinsFileLogs).
+![Description](jenkins.jpg)
 
 
-**Uninstall Jenkins**
 
+## Uninstallation of Jenkins
 To uninstall Jenkins, run the following commands:
 
--  helm uninstall <jenkins>
--  kubectl get pv
--  kubectl delete pv <pv-name>
-
-
-
+```bash
+helm uninstall jenkins
+kubectl get pv
+kubectl delete pv <pv-name>
+```
